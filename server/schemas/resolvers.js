@@ -33,6 +33,9 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
+
+        // input object is passing input type variables defined in typeDefs
+        // the properties of the input object will be passed to the savedBooks nested schema under user
         saveBook: async (parent, { input }, context) => {
             if (context.user) {
 
@@ -46,6 +49,7 @@ const resolvers = {
             throw new AuthenticationError('You need to be logged in for this action.');
 
         },
+
         removeBook: async (parent, args, context) => {
             if (context.user) {
                 const upadatedUser = await User.findOneAndUpdate(

@@ -20,6 +20,13 @@ type Book {
     link: String
 }
 
+
+type Query {
+    me: User
+   
+}
+
+# using input types to simplify schema
 input SaveBookInput {
     bookId: String
     authors: [String]
@@ -29,11 +36,7 @@ input SaveBookInput {
     link: String
 }
 
-type Query {
-    me: User
-   
-}
-
+# passing input variables as input type to saveBook()
 type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth # return Auth object
