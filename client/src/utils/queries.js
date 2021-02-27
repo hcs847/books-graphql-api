@@ -1,12 +1,21 @@
 import gql from 'graphql-tag';
 
-export const QUERY_GET_ME = gql`
-    query me {
-        _id: ID
-    username: String
-    email: String
-    savedBooks: [Book]
-    
+export const GET_ME = gql`
+    {
+    me {
+      _id
+      username
+      email
+      bookCount
+      savedBooks {
+        bookId
+        authors
+        image
+        description
+        title
+        link
+      }
     }
+  }
 `;
 

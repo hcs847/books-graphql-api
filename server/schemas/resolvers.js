@@ -8,21 +8,12 @@ const resolvers = {
             if (context.user) {
 
                 const userData = await User.findOne({})
-                    .select('-__v -password') // omitting the password
-                    .populate('savedBooks');
+                    .select('-__v -password'); // omitting the password   
 
                 return userData;
             }
             throw new AuthenticationError('Not logged in');
         },
-
-        user: async (parent, { username }) => {
-            return User.findOne({ username })
-        },
-
-        users: async () => {
-            return User.find();
-        }
 
     },
 
@@ -42,18 +33,29 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
-        saveBook: async (parent, input, context) => {
+        saveBook: async (parent, { input }, context) => {
             if (context.user) {
-                const book = await Book.create({ ...input, username: context.user.username });
-                await User.findByIdAndUpdate(
-                    { _id: context.user.id },
-                    { $push: { savedBooks: book.bookId } },
+
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { $addToSet: { savedBooks: input } },
                     { new: true }
                 );
-                return book;
+                return updatedUser;
             }
-            throw new AuthenticationError('No user was found!');
+            throw new AuthenticationError('You need to be logged in for this action.');
 
+        },
+        removeBook: async (parent, args, context) => {
+            if (context.user) {
+                const upadatedUser = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { $pull: { savedBooks: { bookId: args.bookId } } },
+                    { new: true }
+                );
+                return upadatedUser;
+            }
+            throw new AuthenticationError('You need to be logged in for this action.');
         }
     }
 

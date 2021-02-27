@@ -34,7 +34,7 @@ const LoginForm = () => {
       const { data } = await login({
         variables: { ...userFormData }
       });
-
+      // save token to localStorage
       Auth.login(data.login.token);
     }
     catch (e) {
