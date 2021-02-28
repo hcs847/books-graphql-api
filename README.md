@@ -21,7 +21,7 @@ The application is deployed on Heroku, URL: https://books-graphql-api.herokuapp.
 
 The following demo is showing the UI functionality.
 <br>
-![](googleBooksDemo.gif)
+![](client/src/googleBooksDemo.gif)
 
 ## Questions
 
